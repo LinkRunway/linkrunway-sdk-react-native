@@ -1,11 +1,42 @@
-# React Native and Expo (`@linkrunway/sdk-react-native`, `@linkrunway/sdk-expo`)
+# LinkRunway SDK for React Native
+
+[Website](https://linkrunway.com) · [Developer guide](https://linkrunway.com/resources/developers) · [Releases](https://github.com/LinkRunway/linkrunway-sdk-react-native/releases) · [Issues](https://github.com/LinkRunway/linkrunway-sdk-react-native/issues)
+
+**Published version: [0.2.0](https://github.com/LinkRunway/linkrunway-sdk-react-native/releases/tag/0.2.0) · [MIT license](LICENSE)**
+
+Install from the versioned GitHub release archive below; npm registry publication is not required. The app supplies its storage and linking adapters.
+
+The default branch may include documentation or source changes that have not been released. Use a published version for an application dependency.
+
+<details>
+<summary>Guide contents</summary>
+
+- [Install](#install)
+- [Setup](#setup)
+- [What the client does](#what-the-client-does)
+- [API](#api)
+- [Values only native code can read](#values-only-native-code-can-read)
+- [Expo](#expo)
+- [Privacy notes](#privacy-notes)
+- [Verified and not verified](#verified-and-not-verified)
+- [Contributing and support](#contributing-and-support)
+
+</details>
 
 Two typed JavaScript packages on top of the [core SDK](https://github.com/LinkRunway/linkrunway-sdk-js#readme):
 
 - `@linkrunway/sdk-react-native` connects the core SDK to an app: persistent storage, incoming links, the offline queue, and the first-launch match.
 - `@linkrunway/sdk-expo` re-exports that layer and adds an Expo config plugin that declares your link domains in the native projects.
 
-**Neither package contains a native module.** They do not import `react-native`, and they cannot read the Play install referrer, an AdServices token, or a device attestation. The app passes those values in; [Values only native code can read](#values-only-native-code-can-read) shows how. Install React Native with `npm install https://github.com/LinkRunway/linkrunway-sdk-react-native/releases/download/0.2.0/linkrunway-sdk-react-native-0.2.0.tgz`, or Expo with `npm install https://github.com/LinkRunway/linkrunway-sdk-expo/releases/download/0.2.0/linkrunway-sdk-expo-0.2.0.tgz`. SDK dependencies install automatically from their versioned releases. See [Verified and not verified](#verified-and-not-verified) before relying on them.
+**Neither package contains a native module.** They do not import `react-native`, and they cannot read the Play install referrer, an AdServices token, or a device attestation. The app passes those values in; [Values only native code can read](#values-only-native-code-can-read) shows how. SDK dependencies install automatically from their versioned releases.
+
+## Install
+
+```sh
+npm install https://github.com/LinkRunway/linkrunway-sdk-react-native/releases/download/0.2.0/linkrunway-sdk-react-native-0.2.0.tgz
+```
+
+See [Verified and not verified](#verified-and-not-verified) before relying on them.
 
 ## Setup
 
@@ -232,3 +263,11 @@ For a domain configured with `/r` in LinkRunway, use `linkPaths: ["/r/"]` in the
 ```
 
 The new `/r` support requires updated SDK artifacts. Host the matching association files and preserve unrelated website paths; adding a plugin option does not configure DNS, TLS or the website ingress.
+
+## Contributing and support
+
+Read [CONTRIBUTING.md](CONTRIBUTING.md) for local development checks and the pull request process. See the [changelog](CHANGELOG.md) and [release history](https://github.com/LinkRunway/linkrunway-sdk-react-native/releases) when upgrading. The [other LinkRunway SDKs](https://github.com/LinkRunway#sdk-repositories) are maintained in separate repositories.
+
+For account, billing, or private integration questions, email **support@linkrunway.com**. Report reproducible SDK bugs in this repository with a redacted reproduction. Follow [SECURITY.md](SECURITY.md) for vulnerabilities and [SUPPORT.md](SUPPORT.md) for help channels. Participation follows our [code of conduct](CODE_OF_CONDUCT.md).
+
+The SDK code is distributed under [MIT](LICENSE). Hosted LinkRunway usage is governed by its [Terms of Service](https://linkrunway.com/terms) and [Privacy Policy](https://linkrunway.com/privacy). Community guidance is also available in the [organization repository](https://github.com/LinkRunway/.github/blob/main/README.md).
