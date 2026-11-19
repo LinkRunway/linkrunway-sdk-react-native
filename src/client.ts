@@ -38,6 +38,7 @@ export function createLinkRunway(options: ReactNativeOptions): LinkRunwayClient 
     randomUUID: options.randomUUID,
     userAgent: USER_AGENT,
   });
+  const rootHosts = new Set(options.rootDomains?.map((host) => host.trim().toLowerCase()));
   const hosts = linkHosts(options.endpoint, options.domains);
   const resolveAs = options.platform.startsWith('android') ? 'android' : 'ios';
   const repeated = duplicateFilter();
@@ -72,7 +73,7 @@ export function createLinkRunway(options: ReactNativeOptions): LinkRunwayClient 
     return core;
   });
   async function incoming(url: string, source: 'initial' | 'open') {
-    const kind = classify(url, hosts);
+    const kind = classify(url, hosts, rootHosts);
     if (!kind) return undefined;
     await ready;
     if (closed) return undefined;

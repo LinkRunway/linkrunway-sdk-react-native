@@ -1,6 +1,6 @@
 {
   "name": "@linkrunway/sdk-react-native",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "LinkRunway SDK for react-native.",
   "license": "MIT",
   "author": "Kimeur Labs, LLC <support@linkrunway.com>",
@@ -52,7 +52,7 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@linkrunway/sdk": "https://github.com/LinkRunway/linkrunway-sdk-js/releases/download/0.2.0/linkrunway-sdk-0.2.0.tgz"
+    "@linkrunway/sdk": "https://github.com/LinkRunway/linkrunway-sdk-js/releases/download/0.3.0/linkrunway-sdk-0.3.0.tgz"
   },
   "publishConfig": {
     "access": "public"

@@ -2,7 +2,7 @@
 
 [Website](https://linkrunway.com) · [Developer guide](https://linkrunway.com/resources/developers) · [Releases](https://github.com/LinkRunway/linkrunway-sdk-react-native/releases) · [Issues](https://github.com/LinkRunway/linkrunway-sdk-react-native/issues)
 
-**Published version: [0.2.0](https://github.com/LinkRunway/linkrunway-sdk-react-native/releases/tag/0.2.0) · [MIT license](LICENSE)**
+**Published version: [0.3.0](https://github.com/LinkRunway/linkrunway-sdk-react-native/releases/tag/0.3.0) · [MIT license](LICENSE)**
 
 Install from the versioned GitHub release archive below; npm registry publication is not required. The app supplies its storage and linking adapters.
 
@@ -33,7 +33,7 @@ Two typed JavaScript packages on top of the [core SDK](https://github.com/LinkRu
 ## Install
 
 ```sh
-npm install https://github.com/LinkRunway/linkrunway-sdk-react-native/releases/download/0.2.0/linkrunway-sdk-react-native-0.2.0.tgz
+npm install https://github.com/LinkRunway/linkrunway-sdk-react-native/releases/download/0.3.0/linkrunway-sdk-react-native-0.3.0.tgz
 ```
 
 See [Verified and not verified](#verified-and-not-verified) before relying on them.
@@ -254,15 +254,23 @@ Not verified:
 - No app was built, so Universal Links and Android App Links opening the app, and domain verification on a device, are untested.
 - Play Install Referrer, AdServices and App Attest or Play Integrity are not implemented here. They depend entirely on the values your app supplies.
 
-### Links on an existing website
+### Branded root links and website links
 
-For a domain configured with `/r` in LinkRunway, use `linkPaths: ["/r/"]` in the Expo plugin options. The default remains `["/l/"]`; `["/l/", "/r/"]` explicitly registers both. Only these prefixes are accepted. Rebuild the native app after changing them. The plugin preserves existing filters; if removing an older managed prefix, review the generated manifest and remove that obsolete filter explicitly. React Native's incoming-link classifier recognizes both prefixes only on the configured domains; the API verifies the domain's exact configured path.
+For a dedicated link host such as `go.example.com/clonos`, use Expo SDK 0.3.0 or newer and set the native plugin’s path to `/`.
+
+```json
+["@linkrunway/sdk-expo", { "domains": ["go.example.com"], "linkPaths": ["/"] }]
+```
+
+Set `rootDomains: ["go.example.com"]` on the React Native or Expo runtime client. The client recognizes a single valid short name on that host and leaves reserved names to the app. The Android root filter covers the host’s paths, so configure it only on a hostname dedicated to links.
+
+For an existing site hosting `example.com/r/clonos`, list `example.com` in the runtime client’s `domains` and use this narrower native filter.
 
 ```json
 ["@linkrunway/sdk-expo", { "domains": ["example.com"], "linkPaths": ["/r/"] }]
 ```
 
-The new `/r` support requires updated SDK artifacts. Host the matching association files and preserve unrelated website paths; adding a plugin option does not configure DNS, TLS or the website ingress.
+Each plugin path applies to every hostname in that plugin configuration. When combining a dedicated host and an existing website in one app, give each host its own Android intent filter with the matching path. The iOS association document for each host selects its paths. Rebuild the native app and inspect the merged manifest after changing filters. The plugin retains existing filters, including any historical `/l/` paths. Omitting `linkPaths` selects that legacy prefix. Host the matching association files and complete DNS, HTTPS and routing verification for both hosts.
 
 ## Contributing and support
 

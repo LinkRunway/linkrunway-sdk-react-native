@@ -35,6 +35,8 @@ export type ReactNativeOptions = {
   storage: AsyncStorageLike;
   /** Hosts whose `/l/<key>` or `/r/<key>` URLs are LinkRunway links. Defaults to the endpoint's host. */
   domains?: string[];
+  /** Dedicated verified hosts that use single-segment root links. */
+  rootDomains?: string[];
   /** The OS release, such as `17.5` or `14`. Not the Android API level. */
   osVersion?: string;
   /** The user's first language tag, such as `en-US`. */

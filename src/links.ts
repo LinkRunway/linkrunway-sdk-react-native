@@ -1,22 +1,34 @@
-import { parseUrl } from '@linkrunway/sdk';
+import { isRootLinkPath, parseUrl } from '@linkrunway/sdk';
 // The same shape the API's resolve endpoint accepts.
 const linkPath = /^\/(?:l|r)\/[A-Za-z0-9_-]+$/;
 /** `token`: the URL carries a signed click token. `link`: it is a LinkRunway link to resolve. */
 export type Incoming = 'token' | 'link' | undefined;
 /** Decides what an incoming URL means to LinkRunway. Any other URL is left to the app. */
-export function classify(url: string, hosts: ReadonlySet<string>): Incoming {
+export function classify(
+  url: string,
+  hosts: ReadonlySet<string>,
+  rootHosts?: ReadonlySet<string>,
+): Incoming {
   try {
     const parsed = parseUrl(url);
     if (parsed.param('lr_token')) return 'token';
     const web = parsed.protocol === 'https:' || parsed.protocol === 'http:';
-    return web && hosts.has(parsed.hostname) && linkPath.test(parsed.pathname) ? 'link' : undefined;
+    return web &&
+      ((hosts.has(parsed.hostname) && linkPath.test(parsed.pathname)) ||
+        (rootHosts?.has(parsed.hostname) && isRootLinkPath(parsed.pathname)))
+      ? 'link'
+      : undefined;
   } catch {
     return undefined;
   }
 }
 /** The same decision for app code that routes URLs itself, such as a navigation intent filter. */
-export const linkKind = (url: string, domains: string[]): Incoming =>
-  classify(url, new Set(domains.map((host) => host.trim().toLowerCase())));
+export const linkKind = (url: string, domains: string[], rootDomains: string[] = []): Incoming =>
+  classify(
+    url,
+    new Set(domains.map((host) => host.trim().toLowerCase())),
+    new Set(rootDomains.map((host) => host.trim().toLowerCase())),
+  );
 /** The hosts whose `/l/<key>` or `/r/<key>` URLs are resolved: the configured domains, or the endpoint's host. */
 export function linkHosts(endpoint: string, domains?: string[]): ReadonlySet<string> {
   const hosts = domains?.length ? domains : [parseUrl(endpoint).hostname];

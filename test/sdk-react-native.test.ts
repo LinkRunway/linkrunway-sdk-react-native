@@ -166,6 +166,10 @@ describe('incoming links', () => {
     expect(await runway.open('https://go.example.com/l/push')).toMatchObject({ source: 'open' });
     expect(links).toHaveLength(1);
     expect(h.paths('resolve')).toHaveLength(2);
+    expect(linkKind('https://go.example.com/AB3FG', ['go.example.com'])).toBeUndefined();
+    expect(linkKind('https://go.example.com/AB3FG', [], ['go.example.com'])).toBe('link');
+    expect(linkKind('https://go.example.com/health', [], ['go.example.com'])).toBeUndefined();
+    expect(linkKind('https://other.example.com/AB3FG', [], ['go.example.com'])).toBeUndefined();
     expect(linkKind('https://GO.example.com/l/summer?s=1', ['Go.Example.com'])).toBe('link');
     expect(linkKind('https://GO.example.com/r/AB8G2', ['Go.Example.com'])).toBe('link');
     expect(linkKind('https://other.example.com/r/AB8G2', ['Go.Example.com'])).toBeUndefined();
